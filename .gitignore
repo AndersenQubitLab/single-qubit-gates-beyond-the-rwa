@@ -1,0 +1,10 @@
+__pycache__/
+.cache/
+.DS_Store
+outputs/
+*.png
+.idea
+*.egg-info/
+*outputs*/
+*results*/
+single-qubit-gates-beyond-the-rwa/extended-data/*
