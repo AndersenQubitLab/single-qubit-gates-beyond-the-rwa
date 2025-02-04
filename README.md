@@ -28,7 +28,7 @@ One of the most relevant things actually happens all the way at the bottom of th
 * The first "simulation" consists of simulating the wavefunctions and potential of the fluxonium, which is figure 1 of the paper.
 * We then perform all the simulations for the zeroth order Magnus approximation, corresponding to figures 2 and 3 of the paper.
 * We then perform the simulations for the first order Magnus approximation, which is figure 4. These simulations can take quite some time, depending on how many cores you have available for multiprocessing.
-* Then, we simulate how the Fluxonium can be modelled as a TLS using phase ramping. This corresponds to figure 6 and a figure in the appendix.
+* Then, we simulate how the Fluxonium can be modelled as a TLS using time-dependent modulation of the drive frequency. This corresponds to figure 6 and a figure in the appendix.
 * Next are the simulations for figure 5. We optimize the drive strength as a function of $\lambda$ and $\Delta$ and make heatmaps of the resulting error.
 * Finally, we perform all the simulations for the experiments. First, we use the time evolution operators generated in `main.py` to numerically simulate the phase error pseudo-identity circuits for varying parameters. Secondly, we simulate the error budgets.
 * At the numerical figures for the paper are plotted at the end of the script. Existing numerical data can be loaded all the way at the end of the script.

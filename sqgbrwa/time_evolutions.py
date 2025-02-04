@@ -204,7 +204,7 @@ def ideal_pulse_parameters_propagator_carrier_phase(tg: float,
     
     # Perform minimization with provided parameters
     delta_max = min([w01*1e-6/2/np.pi, fd_bound])
-    res = _minimize_global(
+    res = minimize_global(
         wrapper,
         x0=x0s,
         bounds=(
@@ -292,7 +292,7 @@ def ideal_pulse_parameters_propagator_carrier_phase_protocol2(tg: float,
         x0s = [[1/2/w01*np.pi/tg] + [1]*len(gate)]
     
     # Perform minimization with provided parameters
-    res = _minimize_global(
+    res = minimize_global(
         wrapper,
         x0=x0s,
         bounds=(
@@ -400,7 +400,7 @@ def ideal_pulse_parameters_propagator_carrier_phase_tdwd(tg: float,
     
     # Perform minimization with provided parameters
     delta_max = min([w01*1e-6/2/np.pi, fd_bound])
-    res = _minimize_global(
+    res = minimize_global(
         wrapper,
         x0=x0s,
         bounds=(
@@ -510,7 +510,7 @@ def ideal_pulse_parameters_propagator_carrier_phase_tdwd_protocol3(tg: float,
         x0s = [[1] + [1]*len(gate)]
     
     # Perform minimization with provided parameters
-    res = _minimize_global(
+    res = minimize_global(
         wrapper,
         x0=x0s,
         bounds=(
@@ -616,7 +616,7 @@ def optimize_omega_delta_for_tls(tg: float,
                                  mat_elems: np.ndarray,
                                  num_phases: int):
     """
-    Optimizes the drive strength and phase ramping amplitude to model
+    Optimizes the drive strength and $\Omega_\Delta$ to model
     a fluxonium 4-level system as a TLS
     """
     phis = [i*np.pi/num_phases for i in range(num_phases)]
@@ -667,11 +667,11 @@ def optimize_omega_delta_for_tls(tg: float,
     # Minimize
     x0s = [[1,1]]
     bounds = ((0.3,1.5),(0,2))
-    res = _minimize_global(fun,
-                           x0s,
-                           bounds=bounds,
-                           tol=1e-10,
-                           method="Nelder-Mead")
+    res = minimize_global(fun,
+                          x0s,
+                          bounds=bounds,
+                          tol=1e-10,
+                          method="Nelder-Mead")
     
     return res["x"], res["fun"], no_correction
 
@@ -705,45 +705,7 @@ def optimize_drive_strength(tg: float,
     x0s = [1*target]
     bounds = ((0.8*target,1.2*target),)
 
-    res = _minimize_global(fun,
-                           x0s,
-                           bounds=bounds,
-                           tol=1e-11,
-                           method="Nelder-Mead")
-    
-    return res["x"], res["fun"]
-
-
-def optimize_drive_strength_with_phase_ramping(tg: float,
-                                               hamiltonian: Callable,
-                                               num_phases: int = 1,
-                                               target: float = 1,
-                                               omega_unit: float = 1,
-                                               *args,
-                                               **kwargs):
-    pulse_envelope = CosinePulseEnvelope(tg=tg)
-    phases = np.linspace(0,np.pi,num_phases)
-    
-    def fun(x):
-        F = 0
-        for phase in phases:
-            H = hamiltonian(tg=tg,
-                            carrier_phase=phase,
-                            V0=x[0]*pulse_envelope.V0,
-                            omega_delta=x[1]*omega_unit,
-                            *args,
-                            **kwargs)
-            
-            U = propagator(H, t0=tg, num_time_steps=10000, U0=np.eye(4, dtype=complex), atol=1e-13, rtol=1e-13)
-            E = sigmax_np.conj().T @ U[:2,:2]
-            F += (2+np.trace(E)*np.trace(E.conj().T)).real/6/num_phases
-
-        return 3/2 * (1-F)
-    
-    x0s = [1*target, 1]
-    bounds = ((0.8*target,1.2*target),(0,2))
-
-    res = _minimize_global(fun,
+    res = minimize_global(fun,
                            x0s,
                            bounds=bounds,
                            tol=1e-11,
@@ -784,24 +746,10 @@ def optimize_drive_strength_fidelity(tg: float,
         x0s = [[1]]
     bounds = ((1-bound, 1+bound),)
 
-    res = _minimize_global(fun,
-                           x0s,
-                           bounds=bounds,
-                           tol=1e-12,
-                           method="Nelder-Mead")
+    res = minimize_global(fun,
+                          x0s,
+                          bounds=bounds,
+                          tol=1e-12,
+                          method="Nelder-Mead")
     
     return res["x"], res["fun"]
-
-
-def chaos_wrapper(tg,
-                  wd,
-                  V0):
-    pulse_envelope = CosinePulseEnvelope(tg=tg)
-    H = H_full_tls(tg=tg,
-                    w01=wd,
-                    wd=wd,
-                    ppp=0,
-                    pulse_envelope=pulse_envelope,
-                    V0=V0)
-    
-    return propagator(H, t0=tg, num_time_steps=10000, U0=np.eye(2, dtype=complex), atol=1e-13, rtol=1e-13)
