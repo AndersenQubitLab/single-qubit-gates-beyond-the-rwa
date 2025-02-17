@@ -1,28 +1,10 @@
-import os
 import multiprocessing
 from itertools import product, repeat
-import json
-from glob import glob
-from datetime import datetime as dt
 import numpy as np
 import scqubits as scq
 from sqgbrwa.time_evolutions import *
 from sqgbrwa.experiment_simulations import *
-
-
-def apply_args_and_kwargs(fn, args, kwargs):
-    """
-    Helper function for multiprocessing
-    """
-    return fn(*args, **kwargs)
-
-
-def starmap_with_kwargs(pool: multiprocessing.Pool, 
-                        fn, 
-                        args_iter, 
-                        kwargs_iter):
-    args_for_starmap = zip(repeat(fn), args_iter, kwargs_iter)
-    return pool.starmap(apply_args_and_kwargs, args_for_starmap)
+from sqgbrwa.utils import *
 
 
 def get_fluxonium_params():
@@ -59,77 +41,6 @@ def get_fluxonium_params():
                           [eta03,0,eta23,0]])
     
     return w01, w02, w03, mat_elems
-
-
-def save_figuredata(figure_data: dict,
-                    folder_name: str,
-                    json_fname: str = "figure_data"):
-    """
-    Saves figure data in an appropriate format.
-    We'll just dump it into a JSON, but because numpy arrays
-    aren't really 'JSON-dumpable' they are exported to a 
-    csv file first, and the corresponding entry in 'figuredata'
-    is modified with a link to that file.
-    """
-    # Gen output dir
-    _time = dt.now().strftime("%Y%m%d-%H%M%S")
-    output_dir = f"{folder_name}/{_time}/"
-    os.mkdir(output_dir)
-
-    # Copy figure data into new dict
-    json_data = figure_data.copy()
-
-    # Loop over figures
-    for fig_number, fig_data in figure_data.items():
-        for k,v in fig_data.items():
-            if isinstance(v, np.ndarray):
-                fname = f"{output_dir}fig-{fig_number}-dataset-{k}.csv"
-                np.savetxt(fname, v)
-                json_data[fig_number][k] = fname
-
-    # Dump data into file
-    with open(f"{output_dir}{json_fname}.json", 'w') as f:
-        json.dump(json_data, f)
-
-
-def load_dataset(dataset: str,
-                 folder_name: str,
-                 json_fname: str = "figure_data"):
-    """
-    Loads data from dataset
-    """
-    input_dir = f"{folder_name}/{dataset}/"
-
-    # Read figure data json file
-    with open(f"{input_dir}{json_fname}.json", 'r') as f:
-        json_data = json.load(f)
-
-    # Do this little hacky thing for now because I saved the data
-    # with incorrect keys 
-    json_data = {k.replace("-","_"):v for k,v in json_data.items()}
-
-    # Loop over CSV files and load data
-    datafiles = glob(f"{input_dir}/*.csv")
-    for datafile in datafiles:
-        f = datafile.split("/")[-1]
-        f = f.split(".")[0]
-        fig_number = f.split("-")[1]
-        var_number = f.split("-")[3]
-
-        try:
-            # Load as real
-            json_data[fig_number][var_number] = np.loadtxt(datafile)
-        except: 
-            # Load as complex
-            json_data[fig_number][var_number] = np.loadtxt(datafile, dtype=np.complex_)
-
-    # Transform keys back to ints
-    try:
-        json_data = {int(k):v for k,v in json_data.items()}
-    except:
-        pass
-
-    return json_data
 
 
 def generate_time_evolution_vs_ppp_detuning():
