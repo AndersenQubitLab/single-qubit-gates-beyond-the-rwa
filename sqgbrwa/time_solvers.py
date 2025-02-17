@@ -24,6 +24,13 @@ def propagator(H: Callable,
         Number of timesteps for the solver
     U0 : np.ndarray
         Initial propagator
+    return_all : bool
+        If True, the unitary time-evolution is returned for every time step.
+        If False, the time-evolution is returned at t=t0.
+    rtol : float
+        Relative tolarance of the ODE solver
+    atol : float
+        Absolute tolerance of the ODE solver
     """
     if U0 is None:
         U0 = np.eye(H(0).shape[0], dtype=complex)

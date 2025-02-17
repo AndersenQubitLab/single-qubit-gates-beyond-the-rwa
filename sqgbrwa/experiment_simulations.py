@@ -10,8 +10,8 @@ k1 = np.array([0,1]).reshape((2,1))
 
 def simulate_evolution_vs_carrier_phase(tg: float,
                                         hamiltonian: Callable,
-                                        num_phases: float,
-                                        num_ppps: float,
+                                        num_phases: int,
+                                        num_ppps: int,
                                         num_levels: int | None,
                                         V0: float = 1,
                                         *args,
@@ -20,6 +20,21 @@ def simulate_evolution_vs_carrier_phase(tg: float,
     Simulates the unitary time-evolution for a range of carrier phases.
     Goal is to interpolate these time-evolution operators to obtain
     the time-evolution for an arbitrary carrier phase.
+
+    Parameters
+    ----------
+    tg : float
+        Gate duration
+    hamiltonian : Callable
+        Function that returns the Hamiltonian
+    num_phases : int
+        Number of carrier phases to simulate the Hamiltonian for
+    num_ppps : int
+        Number of PPP's to simulate the Hamiltonian for
+    num_levels : int | None
+        Number of levels in the Hamiltonian
+    V0 : float
+        Drive strength
     """
     pulse_envelope = CosinePulseEnvelope(tg=tg)
     V0 *= pulse_envelope.V0

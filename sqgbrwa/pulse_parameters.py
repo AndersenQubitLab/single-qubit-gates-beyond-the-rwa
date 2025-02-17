@@ -1277,7 +1277,8 @@ def calculate_theoretical_pulse_parameters(w01: float,
     """
     Calculates theoretical pulse parameters in the first-order 
     Magnus approximation without using the "commensurate" technique outlined
-    in appendix C.
+    in appendix C. Additionally, fixed-point iteration is used to iteratively
+    compute the drive strength, ppp and detuning.
 
     Parameters
     ----------

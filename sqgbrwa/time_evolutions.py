@@ -17,12 +17,6 @@ gates_ideal = {
 }
 
 
-def mp_wrapper(fun,
-               *args,
-               **kwargs):
-    return fun(*args, **kwargs)
-
-
 def H_full_tls(tg: float,
                w01: float,
                wd: float,
@@ -32,8 +26,24 @@ def H_full_tls(tg: float,
                carrier_phase: float = 0):
     """
     Returns the Hamiltonian for a two-level system
-    NOTE that this function does not support
-    different envelope phases
+    This function does not support different envelope phases
+
+    Parameters
+    ----------
+    tg : float
+        Gate duration
+    w01 : float
+        Qubit frequency
+    wd : float
+        Drive frequency
+    ppp : float
+        Value for the PPP \lambda
+    pulse_envelope : PulseEnvelope | None
+        Optional instance of the pulse envelope
+    V0 : float
+        Drive strength
+    carrier_phase : float
+        Carrier phase \phi
     """
     if pulse_envelope is None:
         pulse_envelope = CosinePulseEnvelope(tg=tg)
@@ -77,6 +87,33 @@ def H_full_4_levels(tg: float,
                     pulse_envelope: PulseEnvelope | None = None):
     """
     Returns the Hamiltonian for a 4 level system
+
+    Parameters
+    ----------
+    tg : float
+        Gate duration
+    wd : float
+        Drive frequency
+    w01 : float
+        Qubit frequency
+    alpha2 : float
+        Anharmonicity of |2> state
+    alpha3 : float
+        Anharmonicity of |3> state
+    mat_elems | np.ndarray
+        2x2 numpy array defining the relative drive strengths
+    omega_delta : float
+        Relative drive strength of time-dependent drive frequency term
+    ppp : float
+        Value for PPP \lambda
+    V0 : float
+        Drive strength
+    carrier_phase : float
+        Value for the carrier phase \phi
+    envelope_phase : float
+        Value for the envelope phase \theta
+    pulse_envelope : PulseEnvelope
+        Optional instance of a pulse envelope
     """
     # Define pulse envelope and drive strength
     if pulse_envelope is None:

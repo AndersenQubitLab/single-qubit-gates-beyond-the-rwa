@@ -92,7 +92,7 @@ class Hamiltonian:
     
     def H(self) -> np.ndarray:
         """
-        Returns Hamiltonian in Qobj form
+        Returns Hamiltonian as a numpy array
         """
         return self.RI * np.eye(2) + self.Rx * sigmax_np + self.Ry * sigmay_np + self.Rz * sigmaz_np
 
@@ -136,6 +136,9 @@ def starmap_with_kwargs(pool: multiprocessing.Pool,
                         fn, 
                         args_iter, 
                         kwargs_iter):
+    """
+    Helper function for multiprocessing
+    """
     args_for_starmap = zip(repeat(fn), args_iter, kwargs_iter)
     return pool.starmap(apply_args_and_kwargs, args_for_starmap)
 

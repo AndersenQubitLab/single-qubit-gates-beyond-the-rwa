@@ -196,8 +196,33 @@ def magnus_expansion_1_tg(tg: float,
                           phi: float = 0,
                           return_mode: str = 'dm'):
     """
-    Calculates the dm's or unitaries for the 0th order Magnus term.
-    `term_x` and `term_y` are computed using Mathematica.
+    Calculates the dm's or unitaries for the 1st order Magnus term.
+    `term_x` and `term_y` are computed using Mathematica. It is only 
+    possible to compute the 1st order Magnus term over the full 
+    gate duration. It is possible, of course, to do it at an arbitary
+    time `t`, but those expressions are significantly more involved.
+
+    Parameters
+    ----------
+    tg : float
+        Gate duration
+    wd : float
+        Drive frequency
+    ppp : float
+        Magnitude of out-of-phase drive component relative to the
+        in-phase drive component
+    t : float | np.ndarray
+        Time or array of times to compute the time-evolution/density matrix at
+    V0 : float | None
+        Absolute magnitude of the in-phase component of the drive. If `None`, 
+        it is set such that the integral of the pulse envelope is Pi.
+    detuning : float
+        Detuning of the drive frequency
+    phi : float
+        Phase of the carrier signal
+    return_mode : str
+        If set to `dm`, a density matrix is returned. Otherwise, the 
+        unitary time-evolution operator is returned.
     """
     # Calculate V0 if not provided
     if V0 is None:
