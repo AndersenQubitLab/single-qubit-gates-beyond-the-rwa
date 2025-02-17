@@ -59,6 +59,23 @@ A big part of this work is being able to analytically calculate pulse parameters
 In appendix C of the paper, general forms are provided for the double integrals in the first-order Magnus approximation. A question that the authors had as well was: "Are these expressions correct?" That's why this file exists: it calculates these integrals numerically and using the expressions in appendix C to verify that they are correct.
 
 
+## Numerical and experimental data
+The numerical and experimental data is not included in this repository, but is publicly available through [https://doi.org/10.4121/4e5a545d-436b-4d59-86d2-61506ccaf3cf](https://doi.org/10.4121/4e5a545d-436b-4d59-86d2-61506ccaf3cf). Below is a table linking the numerical datasets to specific figures in the paper:
+
+| Name | Dataset | Figure |
+|------|---------|--------|
+|figure_data/20241119-140354/|Zeroth-order Magnus expansion optimization|Figures 2 and 3|
+|figure_data/20250117-081322/|Optimization for two-level effective Hamiltonian|Figure 6 and 8|
+|figure_data/20250130-175226/|Lambda vs Delta heatmap|Figure 5|
+|figure_data/20250203-080400/|Optimization for first-order Magnus expansion and full time evolution|Figure 4|
+|extended_data/20241201-152543/|Drive strength optimization for experimental parameters|Used for heatmap simulations|
+|extended_data/20241202-002816/|Unitary time evolutions generated on the HPC|Used to simulate phase-error heatmap experiments|
+|extended_data/20250123-194712/|Error budgets for protocol 2 and 3|Figures 7 and 12|
+|extended_data/20250124-131533/|Simulated phase-error heatmaps|Figures 7 and 11|
+|extended_data/20250124-171107/|Error budget for protocol 1|Figures 7 and 12|
+|extended_data/20250126-133937/|Error budget for protocol 4|Figures 7 and 12|
+
+
 ## Author & Contact
 Martijn Zwanenburg \
 m.f.s.zwanenburg@tudelft.nl
