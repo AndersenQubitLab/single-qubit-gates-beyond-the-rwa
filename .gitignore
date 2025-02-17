@@ -5,6 +5,5 @@ outputs/
 *.png
 .idea
 *.egg-info/
-*outputs*/
-*results*/
-single-qubit-gates-beyond-the-rwa/extended-data/*
+data/*
+extended-data/*
