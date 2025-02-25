@@ -12,7 +12,7 @@ def propagator(H: Callable,
                rtol: float = 1e-13,
                atol: float = 1e-13):
     """
-    Calculates the time-dependent propagator U(t) at t=t0 in the Heisenberg picture
+    Calculates the time-dependent propagator U(t) at t=t0
 
     Parameters
     ----------
