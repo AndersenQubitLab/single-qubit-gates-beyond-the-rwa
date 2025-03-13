@@ -1,6 +1,6 @@
 # Single Qubit Gates Beyond the RWA
 
-The manuscript that this repository can be found on arXiv: [arXiv:2503.08238](https://doi.org/10.48550/arXiv.2503.08238).
+The manuscript that this repository pertains to can be found on arXiv: [arXiv:2503.08238](https://doi.org/10.48550/arXiv.2503.08238).
 
 ## Getting started
 
