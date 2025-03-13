@@ -1,5 +1,7 @@
 # Single Qubit Gates Beyond the RWA
 
+The manuscript that this repository can be found on arXiv: [arXiv:2503.08238](https://doi.org/10.48550/arXiv.2503.08238).
+
 ## Getting started
 
 Clone the repo to get started. This repository has been tested using python 3.11.0. This repo will definitely not work for python versions outside 3.8-3.11 due to the numpy version being pinned to <2.0. It is recommened to create a new virtual environment and install the required python packages there using:
